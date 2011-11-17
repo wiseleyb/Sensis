@@ -3,8 +3,27 @@ require 'json'
 require 'net/http'
 
 module Sensis
-  # Application:Ben Wiseley Key: v73669uhpjcmz443nb7zf444
 
+  def Sensis.config
+    if @config.nil?
+      config_file = "#{::Rails.root}/config/sensis.yml"
+      if File.exists?(config_file)
+        @config = YAML.load_file(config_file)
+        @api_key = @config[::Rails.env]["api_key"]
+        @env    = @config[::Rails.env]["env"]
+      end
+    end
+    return @config
+  end
+  
+  def Sensis.api_key
+    @api_key ||= Sensis.config[::Rails.env]["api_key"] unless Sensis.config.nil?
+  end
+  
+  def Sensis.env
+    @env ||= Sensis.config[::Rails.env]["env"] unless Sensis.config.nil?
+  end
+  
   # Search - http://developers.sensis.com.au/docs/endpoint_reference/Search
   # options (from http://developers.sensis.com.au/docs/endpoint_reference/Search)
   # key                   string  API key (required)  See Authenticating for details.
@@ -22,9 +41,10 @@ module Sensis
   # boundingBox           string  Filter listings returned to those within a bounding box.  See Bounding Box Filtering for details.
   # content               string  Filter listings returned to only those with certain types of content. See Filtering by Content Type for details.
   # productKeyword        string  Filter listings returned to only those containing certain product keywords. See Filtering by Product Keyword for details.
-  # test                  boolean Default is true - decides which endpoint is used - test or production
+  # mode            string              Default is "test" - values "test","prod" - decides which endpoint is used - test or production
   # Example - Sensis.serch(:key => "key you got from developers.sensis.com.au", :query => "poker")
   def Sensis.search(options = {})
+    options[:key] ||= Sensis.api_key
     errors = []
     errors << ":key (api key) is required" if options[:key].blank?
     errors << ":query or :location is required" if options[:query].blank? && options[:location].blank?
@@ -36,8 +56,9 @@ module Sensis
   # options
   # key	    string	API key (required)	See Authenticating for details.
   # query	  string	Unique ID of the listing to return (required)	This is the id field of the listing. See Listing Schema for details.
-  # test    boolean Default is true - decides which endpoint is used - test or production
+  # mode            string              Default is "test" - values "test","prod" - decides which endpoint is used - test or production
   def Sensis.get_listing_by_id(options = {})
+    options[:key] ||= Sensis.api_key
     errors = []
     errors << ":key (api key) is required" if options[:key].blank?
     errors << ":query is required" if options[:query].blank? 
@@ -52,8 +73,9 @@ module Sensis
   # userAgent       string              User agent of user accessing your application For example, from the user-agent HTTP header. See Reporting Usage Events for details.
   # userSessionId   string              Session id of user accessing your application See Note below.
   # content         string              Specific content to which the event applies (required)  Only required for certain events. See Reporting Usage Events for details.
-  # test            boolean             Default is true - decides which endpoint is used - test or production
+  # mode            string              Default is "test" - values "test","prod" - decides which endpoint is used - test or production
   def Sensis.report(options = {})
+    options[:key] ||= Sensis.api_key
     errors = []
     errors << ":key (api key) is required" if options[:key].blank?
     errors << ":userIp is required" if options[:userIp].blank?
@@ -74,7 +96,7 @@ module Sensis
           url = "#{url}&#{k}=#{URI.encode(v)}"
         end
       else
-        url = "#{url}&#{k}=#{URI.encode(options[k])}"
+        url = "#{url}&#{k}=#{URI.encode(options[k].to_s)}"
       end
     end
 
@@ -102,13 +124,10 @@ module Sensis
   end
   
   def Sensis.endpoint(endpoint_type, options)
-    options[:test] ||= true
-    if options[:test] == true
-      endpoint = "http://api.sensis.com.au/ob-20110511/test/#{endpoint_type}"
-    else
-      endpoint = "http://api.sensis.com.au/ob-20110511/prod/#{endpoint_type}"
-    end
-    options.delete(:test)
+    env ||= options.delete(:env)
+    env ||=  Sensis.env
+    env ||= "test"
+    endpoint = "http://api.sensis.com.au/ob-20110511/#{env}/#{endpoint_type}"
     endpoint = "#{endpoint}/#{options[:eventName]}" if endpoint_type == "report"
     return endpoint
   end

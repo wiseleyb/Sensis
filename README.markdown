@@ -17,6 +17,21 @@ All results can be accessed by their hash values or by method names... example:
     res["code"] == res.code
     res["results"].size == res.results.size
 
+## Config
+If you don't want to pass your api_key or endpoint env (test/prod, defaults to test if it's not passed) every time you can put it config/sensis.yml
+
+    development:
+      api_key: abcdefg
+      env: test
+
+    test:
+      api_key: abcdefg
+      env: test
+
+    production:
+      api_key: abcdefg
+      env: prod
+
 ### Search  
 
     res = Sensis.search(:key => "your api key", :query => "poker")
@@ -162,11 +177,17 @@ Sample report result set:  see http://developers.sensis.com.au/docs/endpoint_ref
  1. clone the code: git clone git://github.com/wiseleyb/Sensis.git
  2. gem install bundler
  3. bundle install
- 4. bundle exec rspec spec
+ 4. copy spec/dummy/config/sensis.yml.example to sensis.yml
+ 5. fill in your api_key in sensis.yml
+ 
+    bundle exec rspec spec
  
 ## Console
 If you're working on the gem you can muck around in console by
 
+ 1. copy spec/dummy/config/sensis.yml.example to sensis.yml
+ 2. fill in your api_key in sensis.yml
+ 
     cd spec/dummy
     bundle execute rails c
 
@@ -176,3 +197,6 @@ Thank you to jdunwoody for some sample sensis code https://github.com/jdunwoody/
 
 Thank you to mikedemers for some cool json -> class method code (class ResponseData) https://github.com/mikedemers/rbing/blob/master/lib/rbing.rb
 
+# Change log
+0.0.1 - initial release
+0.0.2 - adding sensis.yml support for storing api_keys and env setting

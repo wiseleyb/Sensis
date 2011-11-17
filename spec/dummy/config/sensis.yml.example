@@ -1,0 +1,11 @@
+development:
+  api_key: abcdefg
+  env: test
+
+test:
+  api_key: abcdefg
+  env: test
+
+production:
+  api_key: abcdefg
+  env: prod

@@ -4,8 +4,12 @@ describe Sensis do
   
   context "using sensis search" do
 
+    before do
+      @api_key = Sensis.api_key
+    end
+    
     it "should return results" do
-      res = Sensis.search(:key => "v73669uhpjcmz443nb7zf444", :query => "poker", :location => "2034")
+      res = Sensis.search(:key => @api_key, :query => "poker", :location => "2034")
       res.results.size.should == 20
       res.code.should == 200
     end

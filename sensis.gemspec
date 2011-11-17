@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ben Wiseley"]
   s.email       = ["wiseley@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/wiseleyb/Sensis"
   s.summary     = %q{Ruby gem for Sensis search api}
   s.description = %q{More on Sensis search api http://developers.sensis.com.au/}
 
