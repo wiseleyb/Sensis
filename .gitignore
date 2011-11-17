@@ -3,3 +3,4 @@ spec/dummy/tmp/*
 .DS_Store
 .bundle
 spec/dummy/config/sensis.yml
+*.gem

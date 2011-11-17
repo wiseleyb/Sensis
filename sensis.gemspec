@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   # s.add_development_dependency "database_cleaner"
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "json"
-  s.add_development_dependency "ruby-debug19"
+  s.add_development_dependency "ruby-debug"
   s.add_development_dependency "rcov"
   s.add_development_dependency "tzinfo"
 end
