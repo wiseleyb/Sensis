@@ -62,8 +62,8 @@ So - you could do something like:
 
     res = Sensis.search(:key => "your api key", :query => "poker")
     pages = res.totalResults.to_i / 20
-    pages.each do |page|
-      res = Sensis.search(:key => "your api key", :query => "poker", :page => page.to_s)
+    pages.times do |page|
+      res = Sensis.search(:key => "your api key", :query => "poker", :page => (page +1).to_s)
     end
 
 More on paging in the docs http://developers.sensis.com.au/docs/using_endpoints/Pagination
