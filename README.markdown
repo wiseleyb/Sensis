@@ -213,4 +213,5 @@ Thank you to mikedemers for some cool json -> class method code (class ResponseD
 
 # Change log
 0.0.1 - initial release
-0.0.2 - adding sensis.yml support for storing api_keys and env setting. reverted to  ruby -v 1.8.7
+0.0.2 - adding sensis.yml support for storing api_keys and env setting. 
+0.0.3 - reverted to  ruby -v 1.8.7
