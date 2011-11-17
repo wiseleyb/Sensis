@@ -10,7 +10,7 @@ gem install sensis
 ## Usage
 You can get a free api key at http://developers.sensis.com.au/
 
-Note - all methods (search, get_listing_by_id and report) all take an additional key:  :test => true/false.  This decides if the test endpoint or the production endpoint will be used.  It defaults to test.
+Note - all methods (search, get_listing_by_id and report) all take an additional key:  :env => "test" or "prod".  This decides if the test endpoint or the production endpoint will be used.  It defaults to "test".  You can specify this in the config if you don't want to pass it.
 
 All results can be accessed by their hash values or by method names... example:
 
@@ -18,7 +18,7 @@ All results can be accessed by their hash values or by method names... example:
     res["results"].size == res.results.size
 
 ## Config
-If you don't want to pass your api_key or endpoint env (test/prod, defaults to test if it's not passed) every time you can put it config/sensis.yml
+If you don't want to pass your api_key or endpoint env every time you can put it config/sensis.yml
 
     development:
       api_key: abcdefg
@@ -35,6 +35,10 @@ If you don't want to pass your api_key or endpoint env (test/prod, defaults to t
 ### Search  
 
     res = Sensis.search(:key => "your api key", :query => "poker")
+    
+Or - if you are using the config...
+
+    res = Sensis.search(:query => "poker")
   
 Sensis.search takes a hash of options defined here: http://developers.sensis.com.au/docs/endpoint_reference/Search
 
@@ -86,6 +90,10 @@ More on paging in the docs http://developers.sensis.com.au/docs/using_endpoints/
 ### Get Listing By ID
 
     res = Sensis.get_listing_by_id(:key => "your api key", :query => "999")
+
+Or - if you are using the config...
+
+    res = Sensis.get_listing_by_id(:query => "999")
   
 Sample result set: see for more information
 
@@ -118,6 +126,12 @@ Sample result set: see for more information
 ### Report
   
     res = Sensis.report(:key => "your api key", :userIp => "192.1.2.3", :userAgent => "Mozilla Firefox", 
+      :userSessionId => "123467890", 
+      :id => "VyY2UiOiJZRUxMT1ciLCJwcm9kdWN0SWQiOiIxMjM0IiwicHJvZHVjdFZlcnNpb24iOiI1Njc4In0")
+
+Or - if you are using the config...
+
+    res = Sensis.report(:userIp => "192.1.2.3", :userAgent => "Mozilla Firefox", 
       :userSessionId => "123467890", 
       :id => "VyY2UiOiJZRUxMT1ciLCJwcm9kdWN0SWQiOiIxMjM0IiwicHJvZHVjdFZlcnNpb24iOiI1Njc4In0")
     
