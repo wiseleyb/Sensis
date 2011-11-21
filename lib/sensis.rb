@@ -119,7 +119,7 @@ module Sensis
         puts "Note: #{result["message"]}"
         return res
       else
-        raise "API returned error: #{res.message}, code: #{result.code}"
+        raise "API returned error: #{res['message']}, code: #{result['code']}"
     end
   end
   
