@@ -4,3 +4,4 @@ spec/dummy/tmp/*
 .bundle
 spec/dummy/config/sensis.yml
 *.gem
+.rbenv-version
